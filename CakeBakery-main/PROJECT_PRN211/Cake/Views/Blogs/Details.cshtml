@@ -1,0 +1,170 @@
+﻿@using Microsoft.EntityFrameworkCore;
+@model IEnumerable<Cake.Models.Comment>
+
+@{
+	Layout = "_Layout";
+	ViewBag.Title = "Blogs-Cake Bakery";
+	Blog b = ViewBag.blog;
+	BakeryCakeContext _context = new();
+}
+<style>
+	
+</style>
+<!--================End Main Header Area =================-->
+<section class="banner_area">
+	<div class="container">
+		<div class="banner_text">
+			<h3>Blog Details</h3>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="single-blog.html">Blog Details</a></li>
+			</ul>
+		</div>
+	</div>
+</section>
+<!--================End Main Header Area =================-->
+<!--================Blog Main Area =================-->
+<section class="main_blog_area p_100">
+	<div class="container">
+		<div class="row blog_area_inner">
+			<div class="col-lg-9">
+				<div class="main_blog_inner single_blog_inner">
+					<div class="blog_item">
+						<div class="blog_img">
+							<img class="img-fluid" src="@b.image" alt="">
+						</div>
+						<div class="blog_text">
+							<div class="blog_time">
+								<div class="float-left">
+									<a>@b.CreateDate.ToString("dd MMM. yyyy")</a>
+								</div>
+								<div class="float-right">
+									<ul class="list_style">
+										<li><a>By :  @b.CreateByNavigation.Name</a></li>
+										<li><a>Comments: @ViewBag.count</a></li>
+									</ul>
+								</div>
+							</div>
+							<a><h4>@b.BlogTitle</h4></a>
+							<p>@b.Description</p>
+						</div>
+					</div>
+					<div class="s_comment_list">
+						<h3 class="cm_title_br">Comments @ViewBag.count</h3>
+						<div class="s_comment_list_inner">
+							@{
+								foreach (Comment item in ViewBag.cmt)
+								{
+									<div class="media">
+										<div class="d-flex">
+											<img src="@item.OwnerNavigation.Avatar" alt="" style="width:60px; height60px; border-radius:50%">
+										</div>
+										<div class="media-body">
+											<a><h4>@item.OwnerNavigation.Name</h4></a>
+											<p>@item.Description</p>
+											<div class="date_rep">
+												<a>@item.CreateDate.ToString("MMM dd yyyy")</a>
+												<a class="reply-btn" onclick="createForm(@item.CommentId)">Reply</a>
+                                            </div>
+											<div id="@item.CommentId" class="s_comment_area" style="display:none">
+												<form class="row contact_us_form" method="post" id="contactForm" asp-action="Add" asp-controller="Comment">
+													<input type="text" name="BlogID" value="@b.BlogId" hidden />
+													<input type="text" name="parentID" value="@item.CommentId" hidden />
+													<div class="form-group col-md-12">
+														<textarea class="form-control" name="message" id="message" rows="1" placeholder="Wrtie message"></textarea>
+													</div>
+													<div class="form-group col-md-12">
+														<button type="submit" value="submit" class="btn order_s_btn form-control">Submit</button>
+													</div>
+												</form>
+											</div>
+											@{
+												Comment reply = _context.Comments.Include(x=>x.OwnerNavigation).FirstOrDefault(x=> x.ParentId == item.CommentId);
+												if(reply != null)
+												{
+													<div class="media">
+														<div class="d-flex">
+															<img src="@reply.OwnerNavigation.Avatar" alt="" style="width:60px; height60px; border-radius:50%">
+														</div>
+														<div class="media-body">
+															<a href="#"><h4>@reply.OwnerNavigation.Name</h4></a>
+															<p>@reply.Description</p>
+															<div class="date_rep">
+																<a>@reply.CreateDate.ToString("MMM dd yyyy")</a>
+																<a></a>
+															</div>
+														</div>
+													</div>
+												}
+											}
+										</div>
+									</div>
+								}
+							}
+						</div>
+					</div>
+					<div class="s_comment_area">
+						<h3 class="cm_title_br">Leave a Comment</h3>
+						<div class="s_comment_inner">
+							<form class="row contact_us_form" method="post" id="contactForm" asp-action="Add" asp-controller="Comment">
+								<input type="text" name="BlogID" value="@b.BlogId" hidden/>
+								<div class="form-group col-md-12">
+									<textarea class="form-control" name="message" id="message" rows="1" placeholder="Wrtie message"></textarea>
+								</div>
+								<div class="form-group col-md-12">
+									<button type="submit" value="submit" class="btn order_s_btn form-control">Submit</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="right_sidebar_area">
+
+					<aside class="r_widget categories_widget">
+						<div class="r_title">
+							<h3>Categories</h3>
+						</div>
+						<ul class="list_style">
+							<li><a>Chocolates</a></li>
+							<li><a>Summer Caket</a></li>
+							<li><a>Ice Cream</a></li>
+							<li><a>Lollipop</a></li>
+							<li><a>Sweet</a></li>
+							<li><a>Bakery</a></li>
+						</ul>
+					</aside>
+					<aside class="r_widget recent_widget">
+						<div class="r_title">
+							<h3>Recent News</h3>
+						</div>
+						<div class="recent_w_inner">
+							@{
+								foreach (Blog item in ViewBag.listBlog)
+								{
+									<div class="media">
+										<div class="d-flex">
+											<img src="@item.image" alt="" style="width:70px; height:62px">
+										</div>
+										<div class="media-body" >
+											<a asp-controller="Blogs" asp-action="Details" asp-route-id="@item.BlogId"><h4>@item.BlogTitle</h4></a>
+											<a><p>@item.CreateDate.ToString("dd MMM. yyyy")</p></a>
+										</div>
+									</div>
+								}
+							}
+						</div>
+					</aside>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<script>
+	function createForm(parentID) {
+		document.getElementById(parentID).style.display = 'block';
+	}
+</script>

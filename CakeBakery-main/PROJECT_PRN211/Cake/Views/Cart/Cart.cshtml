@@ -1,0 +1,187 @@
+﻿@model Cart
+@{
+	Layout = "_Layout";
+	ViewBag.Title = "Cart-Cake Bakery";
+}
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="icon" href="img/fav-icon.png" type="image/x-icon" />
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>Cake - Bakery</title>
+
+<!-- Icon css link -->
+<link href="~/assets/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/assets/vendors/linearicons/style.css" rel="stylesheet">
+<link href="~/assets/vendors/flat-icon/flaticon.css" rel="stylesheet">
+<link href="~/assets/vendors/stroke-icon/style.css" rel="stylesheet">
+<!-- Bootstrap -->
+<link href="~/assets/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Rev slider css -->
+<link href="~/assets/vendors/revolution/css/settings.css" rel="stylesheet">
+<link href="~/assets/vendors/revolution/css/layers.css" rel="stylesheet">
+<link href="~/assets/vendors/revolution/css/navigation.css" rel="stylesheet">
+<link href="~/assets/vendors/animate-css/animate.css" rel="stylesheet">
+
+<!-- Extra plugin css -->
+<link href="~/assets/vendors/owl-carousel/owl.carousel.min.css" rel="stylesheet">
+<link href="~/assets/vendors/magnifc-popup/magnific-popup.css" rel="stylesheet">
+<link href="~/assets/vendors/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<link href="~/assets/vendors/nice-select/css/nice-select.css" rel="stylesheet">
+
+<link href="~/assets/css/style.css" rel="stylesheet">
+<link href="~/assets/css/responsive.css" rel="stylesheet">
+<style>
+	.quantity-row {
+		display: flex;
+		justify-content: center;
+	}
+
+	.quantity-container {
+		width: 100px;
+		display: flex;
+		align-items: center;
+	}
+
+	.quantity-input {
+		background-color: white;
+		width: 50px;
+		margin: auto;
+	}
+
+	.quantity-btn {
+		padding: 5px;
+	}
+</style>
+
+<!--================End Main Header Area =================-->
+<section class="banner_area">
+	<div class="container">
+		<div class="banner_text">
+			<h3>Cart Product</h3>
+			<ul>
+				<li><a asp-action="Index">Home</a></li>
+				<li><a asp-action="Products">Cart Product</a></li>
+			</ul>
+		</div>
+	</div>
+</section>
+<!--================End Main Header Area =================-->
+<section class="cart_table_area p_100">
+	<div class="container">
+		<div class="table-responsive">
+			<table class="table">
+				<thead>
+					<tr>
+						<th scope="col">Preview</th>
+						<th scope="col">Product</th>
+						<th scope="col">Price</th>
+						<th scope="col">Quantity</th>
+						<th scope="col">Total</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach(var line in Model?.Lines)
+					{
+						
+					
+					<tr>
+						<td>
+							<img src="@line.Product.Image" alt="" style="width: 120px; height 132px;">
+						</td>
+						<td>@line.Product.Name</td>
+							<td>@string.Format("{0:0.00}", line.Product.UnitPrice)$</td>
+						<td>
+								<div class="quantity-row">
+									<div class="quantity-container">
+										<div class="quantity-btn">
+											<a href="/Cart/RemoveToCart/?productId=@line.Product.ProductId" class="btn btn-sm btn-minus" style="background-color: #f195b2">
+												<i class="fa fa-minus" style="color: #fff"></i>
+											</a>
+										</div>
+										<input type="text" class="quantity-input form-control form-control-sm text-center" value="@line.Quantity">
+										<div class="quantity-btn">
+											<a href="/Cart/AddToCart/?productId=@line.Product.ProductId" class="btn btn-sm btn-plus " style="background-color: #f195b2">
+												<i class="fa fa-plus" style="color: #fff"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+						</td>
+							<td>@string.Format("{0:0.00}", line.Product.UnitPrice * line.Quantity)$</td>
+							<td> <a class="pink_more" href="/Cart/RemoveFromCart/?productId=@line.Product.ProductId">X</a></td>
+					</tr>
+					}
+					<tr>
+						<td>
+							<form class="form-inline">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="Coupon code">
+								</div>
+								<button type="submit" class="btn">Apply Coupon</button>
+							</form>
+						</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="row cart_total_inner">
+			<div class="col-lg-7"></div>
+			<div class="col-lg-5">
+				<div class="cart_total_text">
+					<div class="cart_head">
+						Cart Total
+					</div>
+					<div class="sub_total">
+						<h5>Sub Total <span>@string.Format("{0:0.00}",Model.ComputeTotalValue())$</span></h5>
+					</div>
+					@*<div class="sub_total">
+						<h5>Shipping <span>5.00$</span></h5>
+					</div>*@
+					<div class="total">
+						<h4>Total <span>@string.Format("{0:0.00}",(Model.ComputeTotalValue()))$</span></h4>
+					</div>
+					<div class="cart_footer">
+						<form method="post" asp-controller="Checkout" asp-action="Index">
+							<input type="hidden" name="total" value="@string.Format("{0:0.00}",(Model.ComputeTotalValue()))">
+							<button type="submit" class="pest_btn">Proceed to Checkout</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<!-- Rev slider js -->
+<script src="~/assets/vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
+<script src="~/assets/vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
+<script src="~/assets/vendors/revolution/js/extensions/revolution.extension.actions.min.js"></script>
+<script src="~/assets/vendors/revolution/js/extensions/revolution.extension.video.min.js"></script>
+<script src="~/assets/vendors/revolution/js/extensions/revolution.extension.slideanims.min.js"></script>
+<script src="~/assets/vendors/revolution/js/extensions/revolution.extension.layeranimation.min.js"></script>
+<script src="~/assets/vendors/revolution/js/extensions/revolution.extension.navigation.min.js"></script>
+<!-- Extra plugin js -->
+<script src="~/assets/vendors/owl-carousel/owl.carousel.min.js"></script>
+<script src="~/assets/vendors/magnifc-popup/jquery.magnific-popup.min.js"></script>
+<script src="~/assets/vendors/isotope/imagesloaded.pkgd.min.js"></script>
+<script src="~/assets/vendors/isotope/isotope.pkgd.min.js"></script>
+<script src="~/assets/vendors/datetime-picker/js/moment.min.js"></script>
+<script src="~/assets/vendors/datetime-picker/js/bootstrap-datetimepicker.min.js"></script>
+<script src="~/assets/vendors/nice-select/js/jquery.nice-select.min.js"></script>
+<script src="~/assets/vendors/jquery-ui/jquery-ui.min.js"></script>
+<script src="~/assets/vendors/lightbox/simpleLightbox.min.js"></script>
+
+<script src="~/assets/js/theme.js"></script>

@@ -1,0 +1,79 @@
+﻿@model User
+@{
+	Layout = null;
+	String loginFail = ViewBag.fail;
+}
+<title>Login </title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/assets1/css/style.css">
+<style>
+	.imgb {
+		background-image: url('https://wallpapercave.com/wp/wp2003990.jpg');
+	}
+</style>
+
+<body class="img js-fullheight imgb">
+	<section class="ftco-section">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5">
+					<h2 class="heading-section">Login</h2>
+				</div>
+			</div>
+			<div class="row justify-content-center">
+				<div class="col-md-6 col-lg-4">
+					<div class="login-wrap p-0">
+						<h3 class="mb-4 text-center">Have an account?</h3>
+						@*<form asp-action="Login" class="signin-form">*@
+							@using(Html.BeginForm("Login", "Access", FormMethod.Post)){
+							<div class="form-group">
+								@Html.TextBoxFor(x=>x.UserName, new{ @class="form-control", placeholder="Username/Email/Phone",
+							required="required", autofocus="autofocus"})
+								@*<input type="text" class="form-control" placeholder="Username" name="username" required>*@
+							</div>
+							<div class="form-group">
+								@Html.TextBoxFor(x=>x.Password, new{@class="form-control", type="password", placeholder="Password"})
+								@*<input id="password-field" type="password" class="form-control" placeholder="Password" name="pass" required>*@
+								<span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password"></span>
+							</div>
+							<div style="color: red">@ViewBag.Mess</div>
+							<div class="form-group">
+								<button type="submit" style="background-color: #f195b2" class="form-control btn-primary submit px-3">Sign In</button>
+							</div>
+							<div class="form-group d-md-flex">
+								<div class="w-50">
+									<label class="checkbox-wrap checkbox-primary" style="color: #fff">
+										Remember Me
+										<input type="checkbox" style="color: #fff" checked>
+										<span class="checkmark" style="color: #fff"></span>
+									</label>
+								</div>
+								<div class="w-50 text-md-right">
+									<a href="#" style="color: #fff">Forgot Password</a>
+								</div>
+							</div>
+						}
+						@*</form>*@
+						<div class="social d-flex text-center" style="margin-left:30%">
+							<a asp-controller="Access" asp-action="Register" class="px-2 py-2 mr-md-1 rounded" style="width:40%">
+								<span class="ion-logo-facebook mr-2"></span> Register
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="~/assets1/js/jquery.min.js"></script>
+	<script src="~/assets1/js/popper.js"></script>
+	<script src="~/assets1/js/bootstrap.min.js"></script>
+	<script src="~/assets1/js/main.js"></script>
+
+</body>
+
+

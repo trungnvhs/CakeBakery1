@@ -1,0 +1,84 @@
+﻿@using Microsoft.EntityFrameworkCore;
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Blogs-Cake Bakery";
+    BakeryCakeContext _context = new();
+}
+<section class="banner_area">
+    <div class="container">
+        <div class="banner_text">
+            <h3>Blogs List</h3>
+            <ul>
+                <li><a href="/Home/Index">Home</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!--================End Blog Main Area =================-->
+<section class="contact_form_area p_100">
+    <div class="container">
+        <div class="main_title">
+            <h2>Blogs List</h2>
+        </div>
+        <div>
+            <a asp-action="Create" class="btn" style="background-color: #f195b2; color: #fff; margin-top: -50px">Create</a>
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            BlogID
+                        </th>
+                        <th>
+                            Blog Title
+                        </th>
+                        <th>
+                            Create by
+                        </th>
+                        <th>
+                            CreateDate
+                        </th>
+                        <th>
+                            Number Comments
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (Blog item in ViewBag.BlogsList)
+                    {
+                        <tr>
+                            <td>
+                                @item.BlogId
+                            </td>
+                            <td>
+                                @item.BlogTitle
+                            </td>
+                            <td>
+                                @item.CreateByNavigation.Name
+                            </td>
+
+                            <td>
+                                @item.CreateDate.ToString("dd/mm/yyyy");
+                            </td>
+                            <td>
+                                @{
+                                    int count = _context.Comments
+                                    .Include(x => x.OwnerNavigation)
+                                    .Where(c => c.BlogId == item.BlogId).ToList().Count();
+                                }
+                                @count
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.BlogId"><i class="fa fa-file-text"></i></a> |
+                                <a asp-action="Edit" asp-route-id="@item.BlogId"><i class="fa fa-pencil"></i></a> |
+                                <a asp-action="Delete" asp-route-id="@item.BlogId"><i class="fa fa-times"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>

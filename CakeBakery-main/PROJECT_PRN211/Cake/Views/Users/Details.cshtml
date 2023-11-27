@@ -1,0 +1,127 @@
+﻿@model User
+
+@{
+	Layout = "_Layout";
+    ViewData["Title"] = "Details";
+}
+
+<section class="banner_area">
+	<div class="container">
+		<div class="banner_text">
+			<h3>Account Details</h3>
+			<ul>
+				<li><a href="/Home/Index">Home</a></li>
+			</ul>
+		</div>
+	</div>
+</section>
+<section class="billing_details_area p_100">
+	<div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="order_box_price">
+                    <div class="main_title">
+                        <h2>Avatar</h2>
+                    </div>
+					<div class="avatar">
+						<img class="img-account-profile rounded-circle mb-2" src="@Html.DisplayFor(model => model.Avatar)" alt="" style="border-radius: 50%!important;border:  2px solid #f5b5c9!important;"><br />
+                    </div>
+                </div>
+            </div>
+			<div class="col-lg-8">
+				<div class="main_title">
+					<h2>Account Details</h2>
+				</div>
+				<div class="billing_form_area">
+					<form class="billing_form row" action="" method="post" id="contactForm" novalidate="novalidate">
+						@{
+							string firstName=null, lastName=null;
+							if (Model.Name != null)
+							{
+								string fullName = Model.Name;
+								string[] names = fullName.Split(' ');
+
+								firstName = names[0];
+								lastName = string.Join(" ", names.Skip(1));
+							}
+							
+							<div class="form-group col-md-6">
+								<label for="first">First Name *</label>
+								<input type="text" class="form-control" id="first" name="name" placeholder="First Name" value="@firstName" readonly style="color: #797979;">
+							</div>
+							<div class="form-group col-md-6">
+								<label for="last">Last Name *</label>
+								<input type="text" class="form-control" id="last" name="name" placeholder="Last Name" value="@lastName" readonly style="color: #797979;">
+							</div>
+						}
+						<div class="form-group col-md-6">
+							<label for="comuserNamepany">User Name *</label>
+							<input type="text" class="form-control" id="userName" name="userName" placeholder="User Name" value="@Html.DisplayFor(model => model.UserName)" readonly style="color: #797979;">
+						</div>
+                        <div class="form-group col-md-3">
+							<label for="dob">DOB *</label>
+							@*<input type="date" class="form-control" id="dob" name="dob" placeholder="Date of Birth" value="@Model.Dob.ToString("yyyy-MM-dd")" readonly style="color: #797979;">*@
+							@Html.TextBoxFor(model => model.Dob, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" , @style = "color: #797979", @ReadOnly = "readonly"})
+                        </div>
+						<div class="form-group col-md-3">
+							<label for="company">Gender</label>
+                            <select disabled class="form-control">
+                                @{
+                                    if (Model.Sex == true)
+                                    {
+                                        <option value="0" selected>Female</option>
+                                    }else{
+                                        if (Model.Sex == false)
+                                        {
+                                            <option value="1" selected>Male</option>
+                                        }else{
+                                            <option>Select an option</option>
+                                        }
+                                    }
+                                    
+                                }
+								<option>Select an option</option>
+								<option value="0">Male</option>
+								<option value="1">Female</option>
+							</select>
+						</div>
+						<div class="form-group col-md-4">
+							<label for="phone">Phone *</label>
+							<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="@Html.DisplayFor(model => model.Phone)" readonly style="color: #797979;">
+						</div>
+						<div class="form-group col-md-2"></div>
+						<div class="form-group col-md-6">
+							<label for="mail">Mail *</label>
+							<input type="text" class="form-control" id="mail" name="mail" placeholder="Mail" value="@Html.DisplayFor(model => model.Mail)" readonly style="color: #797979;">
+						</div>
+						<div class="form-group col-md-12">
+							<label for="city">Address *</label>
+							@*<input type="text" class="form-control" id="city" name="city" placeholder="Town /City" value="@Html.DisplayFor(model => model.Roles)" readonly style="color: #797979;">*@
+						</div>
+                        <div class="form-group col-md-2"></div>
+                        <div>
+							@{
+								if (ViewBag.view == null)
+								{
+									<a class="btn btn pest_btn" asp-action="Edit" asp-route-id="@Model?.UserId">Edit</a>
+									BakeryCakeContext _context = new BakeryCakeContext();
+									if (@_context.Users.Where(x => x.UserName.Equals(Context.Session.GetString("UserName"))).SingleOrDefault().RoleName.Equals("Admin"))
+									{
+										<span> | </span>
+										<a class="btn pest_g_btn" asp-action="Index">Back to List</a>
+									}
+								}
+								else
+								{
+									<a class="btn pest_btn" asp-controller="Orders" asp-action="Index">Go Back</a>
+								}
+
+							}
+                        </div>
+					</form>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</section>

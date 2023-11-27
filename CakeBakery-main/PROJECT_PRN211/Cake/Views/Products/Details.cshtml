@@ -1,0 +1,90 @@
+﻿@model Product
+
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Detail-Product";
+}
+
+<!--================End Main Header Area =================-->
+<section class="banner_area">
+    <div class="container">
+        <div class="banner_text">
+            <h3>Product Details</h3>
+            <ul>
+                <li><a asp-action="Index">Home</a></li>
+                <li><a asp-action="Products/Details">Product Details</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!--================End Main Header Area =================-->
+<!--================Product Details Area =================-->
+<section class="product_details_area p_100">
+    <div class="container">
+        <div class="row product_d_price">
+            <div class="col-lg-6">
+                <div class="product_img"><img style="width: 525px; height: 335px" class="img-fluid" src=" @Html.DisplayFor(model => model.Image)" alt=""></div>
+            </div>
+            <div class="col-lg-6">
+                <div class="product_details_text">
+                    <h4>@Html.DisplayFor(model => model.Name)</h4>
+                    <p>@Html.DisplayFor(model => model.Describe)</p>
+                    <h5>Price :<span> @Html.DisplayFor(model => model.UnitPrice)$</span></h5>
+                    <div class="quantity_box">
+                        <label for="quantity">Quantity :</label>
+                        <input type="text" placeholder="1" id="quantity">
+                    </div>
+                    <a class="pink_more" href="/Cart/AddToCart/?productId=@Model.ProductId">Add to Cart</a>
+                    @*<a class="pink_more"  asp-action="Edit" asp-route-id="@Model.ProductId">Edit</a>
+                    <a class="pink_more" asp-action="Delete" asp-route-id="@Model.ProductId">Delete</a>*@
+                </div>
+            </div>
+        </div>
+        @*<div class="product_tab_area">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Descripton</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    <p>@Html.DisplayFor(model => model.Describe)</p>
+                </div>
+            </div>
+        </div>*@
+    </div>
+</section>
+<!--================End Product Details Area =================-->
+<!--================Similar Product Area =================-->
+<section class="similar_product_area p_100">
+    <div class="container">
+        <div class="main_title">
+            <h2>Similar Products</h2>
+        </div>
+        <div class="row similar_product_inner">
+            @foreach (var product in ViewData["ProductsWithSameCategory"] as List<Product>)
+            {
+                <div class="col-lg-3 col-md-4 col-6">
+                    <div class="cake_feature_item">
+                        <a asp-action="Details" asp-route-id="@product.ProductId">
+                        <div class="cake_img">
+                            <img src="@product.Image" alt="@product.Name" style="width: 100%; height: 226px;">
+                        </div>
+                        </a>
+                        <div class="cake_text">
+                            <h4 style="font-size: 22px">@string.Format("{0:0.00}",@product.UnitPrice)$</h4>
+                            <a asp-action="Details" asp-route-id="@product.ProductId"><h3>@product.Name</h3></a>
+                            <a class="pink_more" href="/Cart/AddToCart/?productId=@product.ProductId">Add to cart</a>
+                        </div>
+                    </div>
+                </div>
+
+                @if (ViewData.ModelState.IsValid && ViewData.ModelState.Count >= 4)
+                {
+                    break; // Chỉ hiển thị 4 sản phẩm
+                }
+            }
+        </div>
+    </div>
+</section>
+<!--================End Similar Product Area =================-->

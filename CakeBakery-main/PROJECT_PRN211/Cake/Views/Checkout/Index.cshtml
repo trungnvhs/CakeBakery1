@@ -1,0 +1,111 @@
+﻿@*@model IEnumerable<User>*@
+@model User
+
+@{
+	Layout = "_Layout";
+	ViewBag.Title = "Check Out";
+	User u = ViewBag.cus;
+}
+
+<section class="banner_area">
+	<div class="container">
+		<div class="banner_text">
+			<h3>Chekout</h3>
+			<ul>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="checkout.html">Chekout</a></li>
+			</ul>
+		</div>
+	</div>
+</section>
+<!--================End Main Header Area =================-->
+<!--================Billing Details Area =================-->
+<section class="billing_details_area p_100">
+	<div class="container">
+		<div class="return_option">
+		</div>
+		<div class="row">
+			<div class="col-lg-7">
+				<div class="main_title">
+					<h2>Billing Details</h2>
+				</div>
+				<div class="billing_form_area">
+					<form id="frm_sub" class="billing_form row" method="post" asp-action="Order" asp-controller="Cart">
+						@{
+							string firstName = null, lastName = null;
+							if (u.Name != null)
+							{
+								string fullName = u.Name;
+								string[] names = fullName.Split(' ');
+
+								firstName = names[0];
+								lastName = string.Join(" ", names.Skip(1));
+							}
+
+							<div class="form-group col-md-6">
+								<label for="first">First Name *</label>
+								<input type="text" class="form-control" id="first" name="name" placeholder="First Name" value="@firstName" readonly style="color: #797979;">
+							</div>
+							<div class="form-group col-md-6">
+								<label for="last">Last Name *</label>
+								<input type="text" class="form-control" id="last" name="name" placeholder="Last Name" value="@lastName" readonly style="color: #797979;">
+							</div>
+						}
+						
+                        <div class="form-group col-md-6">
+                            <label for="phone">Phone *</label>
+							<input type="text" class="form-control" id="phone" name="phone" placeholder="Phone" value="@u.Phone">
+							@Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+
+                        </div>
+						<div class="form-group col-md-6">
+							<label for="email">Email Address</label>
+							<input type="email" class="form-control" id="email" name="email" placeholder="Email" value="@u.Mail">
+						</div>
+                        <div class="form-group col-md-12">
+                            <label for="address">Address *</label>
+							<input type="text" class="form-control" id="address" name="address" placeholder="Street Address" value="@u.Address" required="">
+							@Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+						<div id="error"></div>
+						<div class="form-group col-md-12">
+							<label for="phone">Order Notes</label>
+							<textarea class="form-control" name="message" id="message" rows="1" placeholder="Note about your order. e.g. special note for delivery"></textarea>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="col-lg-5">
+				<div class="order_box_price">
+					<div class="main_title">
+						<h2>Your Order</h2>
+					</div>
+					<div class="payment_list">
+						<div class="price_single_cost">
+							<h5>Prodcut <span>Total</span></h5>
+							<h4>Subtotal <span>@string.Format("{0:0.00}",ViewBag.count)$</span></h4>
+							<h5>Shipping And Handling<span class="text_f">5.00$</span></h5>
+							<h3>Total <span>@string.Format("{0:0.00}",(ViewBag.count+5))$</span></h3>
+						</div>
+						<div id="accordion" class="accordion_area">
+							<input type="radio" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" checked>
+											Ship COD
+								<img src="img/checkout-card.png" alt="">
+							</input>
+						</div>
+						<button type="submit" value="submit" class="btn pest_btn" onclick="submit()">Place Order</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	function submit(){
+		if (document.getElementById("phone").value.trim() === "" || document.getElementById("address").value.trim() === "") {
+			alert("Phone or Address cannot be empty.");
+		}else{
+			document.getElementById("frm_sub").submit();
+		}
+	}
+</script>

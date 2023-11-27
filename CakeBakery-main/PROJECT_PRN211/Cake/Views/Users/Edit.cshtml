@@ -1,0 +1,203 @@
+﻿@model User
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Edit";
+}
+<section class="banner_area">
+    <div class="container">
+        <div class="banner_text">
+            <h3>Edit Account</h3>
+            <ul>
+                <li><a href="/Home/Index">Home</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+<section class="billing_details_area p_100">
+	<div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="order_box_price">
+                    <div class="main_title">
+                        <h2>Avatar</h2>
+                    </div>
+					<div class="avatar">
+                        <img class="img-account-profile rounded-circle mb-2" src="@Html.DisplayFor(model => model.Avatar)" alt="" style="border-radius: 50%!important;border:  2px solid #f5b5c9!important;"><br />
+						<button type="submit" value="submit" class="btn pest_btn" style="margin-top:16px">Upload new image</button>
+                    </div>
+                </div>
+            </div>
+			<div class="col-lg-8">
+				<div class="main_title">
+					<h2>Account Details</h2>
+				</div>
+				<div class="billing_form_area">
+                    <form class="billing_form row" asp-action="Edit" id="contactForm" novalidate="novalidate">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="UserId" />
+						@{
+                            string firstName = null, lastName = null;
+                            if (Model.Name != null)
+                            {
+                                string fullName = Model.Name;
+                                string[] names = fullName.Split(' ');
+
+                                firstName = names[0];
+                                lastName = string.Join(" ", names.Skip(1));
+                            }
+							<div class="form-group col-md-6">
+								<label for="first">First Name *</label>
+								<input type="text" class="form-control" id="first" placeholder="First Name" value="@firstName" style="color: #797979;">
+							</div>
+							<div class="form-group col-md-6">
+								<label for="last">Last Name *</label>
+                                <input type="text" class="form-control" id="last" placeholder="Last Name" value="@lastName" style="color: #797979;">
+							</div>
+                            <input asp-for="Name" class="form-control" style="display: none" id="name"/>
+                            <span asp-validation-for="Name" class="text-danger"></span>
+
+                        }
+                        <script>
+                            function getName(){
+                                var first = document.getElementById("first").value;
+                                var last = document.getElementById("last").value;
+                                var name = first + " " + last;
+                                document.getElementById("name").value = name;
+                                
+                            }
+                        </script>
+						<div class="form-group col-md-6">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" class="form-control" style="color: #797979;" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+						</div>
+                        <div class="form-group col-md-6" style="display:none">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control" style="color: #797979;" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label asp-for="Dob" class="control-label"></label>
+                            <input type="date" asp-for="Dob" class="form-control" style="color: #797979;" />
+                            <span asp-validation-for="Dob" class="text-danger"></span>
+                        </div>
+						<div class="form-group col-md-3">
+                            <label asp-for="Sex" class="control-label"></label>
+                            <select asp-for ="Sex" class="form-control">
+                                @{
+                                    if (Model.Sex == true)
+                                    {
+                                        <option>Select an option</option>
+                                            <option value="true" selected>Female</option>
+                                            <option value="false">Male</option>
+                                    }else{
+                                        if (Model.Sex == false)
+                                        {
+                                            <option>Select an option</option>
+                                            <option value="true">Female</option>
+                                            <option value="false" selected>Male</option>
+                                        }else{
+                                            <option>Select an option</option>
+                                            <option value="true">Male</option>
+                                            <option value="false">Female</option>
+                                        }
+                                    }
+                                    
+                                }
+							</select>
+                            <span asp-validation-for="Sex" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-4">
+                            <label asp-for="Phone" class="control-label"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-2"></div>
+						<div class="form-group col-md-6">
+                            <label asp-for="Mail" class="control-label"></label>
+                            <input asp-for="Mail" class="form-control" />
+                            <span asp-validation-for="Mail" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-12">
+							<label for="city">Address *</label>
+							@*<input type="text" class="form-control" id="city" name="city" placeholder="Town /City" value="@Html.DisplayFor(model => model.Roles)" style="color: #797979;">*@
+						</div>
+                        <div class="form-group col-md-2"></div>
+                        <div>
+                            <input type="submit" value="Save" class="btn pest_btn" onclick="getName()" /> | 
+                            <a class="btn pest_g_btn" asp-action="Edit" asp-route-id="@Model?.UserId">Cancel</a>
+                        </div>
+					</form>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+</section>
+
+@*<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UserId" />
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label"></label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mail" class="control-label"></label>
+                <input asp-for="Mail" class="form-control" />
+                <span asp-validation-for="Mail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sex" class="control-label"></label>
+                <input asp-for="Sex" class="form-control" />
+                <span asp-validation-for="Sex" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dob" class="control-label"></label>
+                <input asp-for="Dob" class="form-control" />
+                <span asp-validation-for="Dob" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Avatar" class="control-label"></label>
+                <input asp-for="Avatar" class="form-control" />
+                <span asp-validation-for="Avatar" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsActive" class="control-label"></label>
+                <input asp-for="IsActive" class="form-control" />
+                <span asp-validation-for="IsActive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>*@
+

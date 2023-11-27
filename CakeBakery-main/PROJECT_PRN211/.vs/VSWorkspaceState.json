@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Cake",
+    "\\Cake\\Controllers",
+    "\\Cake\\Views",
+    "\\Cake\\Views\\Products",
+    "\\Cake\\wwwroot",
+    "\\Cake\\wwwroot\\assets2",
+    "\\Cake\\wwwroot\\assets2\\css"
+  ],
+  "SelectedNode": "\\Cake\\Controllers\\ProductsController.cs",
+  "PreviewInSolutionExplorer": false
+}

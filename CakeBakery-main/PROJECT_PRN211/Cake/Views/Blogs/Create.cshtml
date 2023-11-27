@@ -1,0 +1,105 @@
+﻿@model Blog
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "_Layout";
+    User u = @ViewBag.owner;
+}
+
+<section class="banner_area">
+    <div class="container">
+        <div class="banner_text">
+            <h3>Create Product</h3>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="single-blog.html">Create Product</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+<!--================End Main Header Area =================-->
+<!--================Contact Form Area =================-->
+<section class="contact_form_area p_100">
+    <div class="container">
+        <div class="main_title">
+            <h2>Create Product</h2>
+            <h5>Added a new cake bakery model of the shop</h5>
+        </div>
+        <div class="row">
+            <div class="col-lg-7">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="BlogTitle" class="control-label"></label>
+                        <input asp-for="BlogTitle" class="form-control" />
+                        <span asp-validation-for="BlogTitle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="image" class="control-label"></label>
+                        <input asp-for="image" class="form-control" />
+                        <span asp-validation-for="image" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-4 offset-md-1">
+                <div class="contact_details">
+                    <div class="contact_d_item">
+                        <h3>Address :</h3>
+                        <p>54B, Tailstoi Town 5238 <br /> La city, IA 522364</p>
+                    </div>
+                    <div class="contact_d_item">
+                        <h5>Phone : <a href="tel:01372466790">01372.466.790</a></h5>
+                        <h5>Email : <a href="mailto:rockybd1995@gmail.com">rockybd1995@gmail.com</a></h5>
+                    </div>
+                    <div class="contact_d_item">
+                        <h3>Opening Hours :</h3>
+                        <p>8:00 AM – 10:00 PM</p>
+                        <p>Monday – Sunday</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@*<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="BlogTitle" class="control-label"></label>
+                <input asp-for="BlogTitle" class="form-control" />
+                <span asp-validation-for="BlogTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateBy" class="control-label"></label>
+                <select asp-for="CreateBy" class ="form-control" asp-items="ViewBag.CreateBy"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CreateDate" class="control-label"></label>
+                <input asp-for="CreateDate" class="form-control" />
+                <span asp-validation-for="CreateDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="List">Back to List</a>
+</div>*@
+

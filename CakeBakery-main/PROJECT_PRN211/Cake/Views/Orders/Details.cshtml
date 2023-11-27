@@ -1,0 +1,138 @@
+﻿@using Microsoft.EntityFrameworkCore;
+@model Cake.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "_Layout";
+}
+
+<section class="banner_area">
+    <div class="container">
+        <div class="banner_text">
+            <h3>Order Details</h3>
+            <ul>
+                <li><a href="/Home/Index">Home</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+<section class="contact_form_area p_100">
+    <div class="container">
+        <div class="main_title">
+            <h2>Order Details</h2>
+        </div>
+        <hr style="width:36%;float:left" /><br />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.OrderId)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.OrderId)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Customer)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Customer.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Customer.Phone)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Customer.Address)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Address)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.OrderDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Model.OrderDate.ToString("dd/MM/yyyy")
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Note)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Note)
+            </dd>
+            <dt class="col-sm-2">
+                Status
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            
+        </dl>
+        <div class="row">
+            <table class="table" style="width: 60%">
+                <thead>
+                    <tr>
+                        <th>
+                            Product Name
+                        </th>
+                        <th>
+                            Quantity
+                        </th>
+                        <th>
+                            UnitPrice
+                        </th>
+                        <th>
+                            Price
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.orderItems)
+                    {
+                        <tr>
+                            <td>
+                                @item.Product.Name
+                            </td>
+                            <td>
+                                @item.Quantity
+                            </td>
+                            <td>
+                                @string.Format("{0:0.00}", item.Product.UnitPrice)$
+                            </td>
+                            <td>
+                                @string.Format("{0:0.00}", item.Quantity * item.Product.UnitPrice)$
+                            </td>
+                        </tr>
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <th>Ship Cost</th>
+                        <td>
+                            5.00$
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <th>Total</th>
+                        <td>
+                            @{
+                                BakeryCakeContext _context = new();
+                                List<OrderItem> oi = _context.OrderItems.Include(x => x.Product).Where(x => x.OrderId == Model.OrderId).ToList();
+                                decimal price = 0;
+                                foreach (var i in oi)
+                                {
+                                    price += i.Product.UnitPrice * i.Quantity;
+                                }
+                                price += 5;
+                                @string.Format("{0:0.00}",price)
+
+                                <span>$</span>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
